@@ -1,9 +1,22 @@
 
 \section{Heap}
 
+To model the memory used by the program we want to verify, we use a graph with nodes and labeled edges.
+Each node represents a memory cell whereas each edge represents a pointer to the next part of the Data-Structure.
+The edges are labeled with a color to distinguish between these selectors. For simplicity only structures with
+two pointers will be considered. The selectors will be labeled 1 and 2 
+(instead of common known selectors \textit{next} and \textit{prev}). The approach we use though can be generalized
+for structures with any number of selectors.\\
+We now need to define two special nodes, one for the \textit{null pointer} and one for \textit{dangling pointers}.
+The \textit{null node}, written as $\#$, will be used to model null successors whereas the \textit{dangling node},
+written as $*$, will be used to model pointers which used to point to memory that has been freed or not yet been allocated.
+Both these nodes will be used by making the corresponding edge link to one of them.
+
+
+
 \section{Signatures}
 
-\subsection{Transisition}
+\subsection{Transition}
 
 \subsection{Signatures}
 

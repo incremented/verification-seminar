@@ -40,9 +40,10 @@ $\forall c \in C$ $\forall m \in M : |s^{-1}(m) \cap \tau^{-1}(c)| = 1$ \\
 
 \noindent
 % Heap operations
+\subsection{Operations on Heaps}
 To work with these heaps, we have to define two operations on it. \\
 Let $h = (\overline{M}, E, s, t, \tau, \lambda)$ be a heap, 
-then $h \oplus m = h'$ for $m \in M$, where $h'$ is the heap resulting from the addition of the cell $m$ and it's two
+then $h \oplus m$ is equal to $h'$ for $m \in M$, where $h'$ is the heap resulting from the addition of the cell $m$ and it's two
 outgoing \textit{dangling} edges.\\
 Respectively $h \ominus m$ is defined as the heap $h'$ with the cell $m$ and it's outgoing edges removed, where
 all edges that previously pointed to $m$ are now \textit{dangling} edges.
@@ -51,7 +52,6 @@ all edges that previously pointed to $m$ are now \textit{dangling} edges.
 \newpage
 % Signatures
 \section{Signatures}
-
 We now define a way to characterize heaps into classes with certain properties.
 Therefore we introduce Signatures, which can be seen as a predicate describing a set of minimal
 conditions a heap has to fulfill to satisfy the predicate. 
@@ -63,18 +63,29 @@ We define Signatures as a tuple $(\overline{M}, E, s, t, \tau, \lambda)$ identic
 that the functions $\tau$ and $\lambda$ can be partial. As for the heaps, we also define two invariants for
 signatures:
 
+% Signature Invariants
 \begin{enumerate}
-
 	\item $\forall c \in C$ $\forall m \in M : |s^{-1}(m) \cap \tau^{-1}(c)| \le 1$
 	\item $\forall m \in M : |s^{-1}(m)| \le 2$
-
 \end{enumerate}
+
+\noindent
+The first invariant states, that each signature's memory cell can't have more than one outgoing edge of each color.
+Whereas the second invariant states, that each memory cell can have at most two outgoing edges in total.
+
+\subsection{Operations on Signatures}
+As we did for the heaps, we define operations for signatures. Since signatures are basically heaps, we
+can carry over the definition of $\ominus$.\\
+Let now $sig = (\overline{M}, E, s, t, \tau, \lambda)$ be a signature. 
+We define $sig \boxminus e$ as the signature $sig'$ where $e \in E$ has been removed from $sig$ and it's functions 
+$s$, $t$ and $\tau$ are restricted to $E' = E\setminus\{e\}$. We define the addition of an edge in a similar way.
+Given $m_1 \in M$, $m_2 \in \overline{M}$ and $c \in C$, $sig \boxplus (m_1 \xrightarrow{c} m_2)$ denotes the addition
+of a transition of color $c$ between $m_1$ and $m_2$ to $sig$.
+
 
 \subsection{Transition}
 
-\subsection{Signatures}
 
-\subsection{Operations on Signatures}
 
 \subsection{Ordering on Signatures}
 

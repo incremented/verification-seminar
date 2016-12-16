@@ -1,4 +1,4 @@
-
+\newpage
 \section{Heap}
 
 To model the memory used by the program we want to verify, we use a graph with nodes and labeled edges.
@@ -9,9 +9,30 @@ two pointers will be considered. The selectors will be labeled 1 and 2
 for structures with any number of selectors.\\
 We now need to define two special nodes, one for the \textit{null pointer} and one for \textit{dangling pointers}.
 The \textit{null node}, written as $\#$, will be used to model null successors whereas the \textit{dangling node},
-written as $*$, will be used to model pointers which used to point to memory that has been freed or not yet been allocated.
-Both these nodes will be used by making the corresponding edge link to one of them.
+written as $*$, will be used to model pointers which used to point to memory that has been either freed or not yet been allocated.
+Both these nodes will be used by making the corresponding edge link to one of them.\\
+In addition, we need to model a program variable by labeling the node the variable points to, with the variable's name.\\
+The above leads to the following formal definition of a \textit{heap}.\\
+Let $C = \{1,2\}$ be a set of colors and $X$ be a set of program variables.\\
 
+$heap = (\overline{M}, E, s, t, \tau, \lambda)$ where:
+
+\begin{itemize}
+	\item $\overline{M} = M \cup \{\#,*\}$ represents the finite set of allocated memory cells, together with the two special nodes 
+		representing the null value and the dangling pointer, respectively.
+	\item $E$ is a finite set of edges.
+	\item The source function $s : E \rightarrow M$ is a total function that gives the source of the edges.
+	\item The target function $t : E \rightarrow M$ is a total function that gives the target of the edges.
+	\item The type function $\tau : E \rightarrow C$ is a total function that gives the color of the edges.
+	\item $\lambda : X \rightarrow M$ is a total function that defines the positions of the program variables.
+\end{itemize}
+
+% TODO: References
+\noindent
+To verify that each memory cell has exactly one edge labeled 1 and one edge labeled 2, the heap must satisfy
+the following invariant:\\
+
+$\forall c \in C$ $\forall m \in M : |s^{-1}(m) \cap \tau^{-1}(c)| = 1$ 
 
 
 \section{Signatures}

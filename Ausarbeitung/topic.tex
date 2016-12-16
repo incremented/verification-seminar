@@ -1,6 +1,8 @@
 \newpage
+% Heap
 \section{Heap}
 
+% Heap Introduction
 To model the memory used by the program we want to verify, we use a graph with nodes and labeled edges.
 Each node represents a memory cell whereas each edge represents a pointer to the next part of the Data-Structure.
 The edges are labeled with a color to distinguish between these selectors. For simplicity only structures with
@@ -15,6 +17,7 @@ In addition, we need to model a program variable by labeling the node the variab
 The above leads to the following formal definition of a \textit{heap}.\\
 Let $C = \{1,2\}$ be a set of colors and $X$ be a set of program variables.\\
 
+% Heap Definition
 $heap = (\overline{M}, E, s, t, \tau, \lambda)$ where:
 
 \begin{itemize}
@@ -29,13 +32,43 @@ $heap = (\overline{M}, E, s, t, \tau, \lambda)$ where:
 
 % TODO: References
 \noindent
-To verify that each memory cell has exactly one edge labeled 1 and one edge labeled 2, the heap must satisfy
+% Heap Invariant
+To verify that each memory cell has exactly one outgoing edge labeled 1 and one outgoing edge labeled 2, the heap must satisfy
 the following invariant:\\
 
-$\forall c \in C$ $\forall m \in M : |s^{-1}(m) \cap \tau^{-1}(c)| = 1$ 
+$\forall c \in C$ $\forall m \in M : |s^{-1}(m) \cap \tau^{-1}(c)| = 1$ \\
 
+\noindent
+% Heap operations
+To work with these heaps, we have to define two operations on it. \\
+Let $h = (\overline{M}, E, s, t, \tau, \lambda)$ be a heap, 
+then $h \oplus m = h'$ for $m \in M$, where $h'$ is the heap resulting from the addition of the cell $m$ and it's two
+outgoing \textit{dangling} edges.\\
+Respectively $h \ominus m$ is defined as the heap $h'$ with the cell $m$ and it's outgoing edges removed, where
+all edges that previously pointed to $m$ are now \textit{dangling} edges.
+% TODO: Formal Definition if enough space left
 
+\newpage
+% Signatures
 \section{Signatures}
+
+We now define a way to characterize heaps into classes with certain properties.
+Therefore we introduce Signatures, which can be seen as a predicate describing a set of minimal
+conditions a heap has to fulfill to satisfy the predicate. 
+Intuitively a signature can be viewed as a heap with some parts "missing". 
+% TODO: Reference!
+
+\noindent
+We define Signatures as a tuple $(\overline{M}, E, s, t, \tau, \lambda)$ identically to heaps with the exception,
+that the functions $\tau$ and $\lambda$ can be partial. As for the heaps, we also define two invariants for
+signatures:
+
+\begin{enumerate}
+
+	\item $\forall c \in C$ $\forall m \in M : |s^{-1}(m) \cap \tau^{-1}(c)| \le 1$
+	\item $\forall m \in M : |s^{-1}(m)| \le 2$
+
+\end{enumerate}
 
 \subsection{Transition}
 

@@ -80,14 +80,41 @@ Let now $sig = (\overline{M}, E, s, t, \tau, \lambda)$ be a signature.
 We define $sig \boxminus e$ as the signature $sig'$ where $e \in E$ has been removed from $sig$ and it's functions 
 $s$, $t$ and $\tau$ are restricted to $E' = E\setminus\{e\}$. We define the addition of an edge in a similar way.
 Given $m_1 \in M$, $m_2 \in \overline{M}$ and $c \in C$, $sig \boxplus (m_1 \xrightarrow{c} m_2)$ denotes the addition
-of a transition of color $c$ between $m_1$ and $m_2$ to $sig$.
+of a transition of color $c$ between $m_1$ and $m_2$ to $sig$. We conclude with the definition for the Addition of
+a memory cell $m \not\in \overline{M}$ as follows: $sig.(\overline{M} := \overline{M} \cup {m})$ equals the Signature
+$sig' = (\overline{M} \cup {m}, E, s, t, \tau, \lambda)$.
+
+\subsection{Ordering on Signatures}
+
+To define an ordering on signatures, we need to take a look at the following five $ordering$ $steps$ and how they are defined first.
+We begin with the definition of $unlabeled$, $isolated$ and $simple$ memory cells.
+Given a Signature $sig = (\overline{M}, E, s, t, \tau, \lambda)$ and a cell $m \in \overline{M}$, $m$ is $unlabeled$ if 
+$\lambda^{-1}(m) = \emptyset$. We say the cell is $isolated$, if it is $unlabeled$ and also $s^{-1}(m) = \emptyset$ and 
+$t^{-1}(m) = \emptyset$ hold. The cell $m$ is called $simple$, when $m$ is $unlabeled$ and the following constraints
+hold: $s^{-1}(m) = \{e_1$\}, $t^{-1}(m) = \{e_2\}$, $e_1 \not= e_2$ and $\tau(e_1) = \tau(e_2)$. 
+We can now define an ordering on two given signatures $sig_1 = (\overline{M}_1, E_1, s_1, t_1, \tau_1, \lambda_1)$ and
+$sig_2 = (\overline{M}_2, E_2, s_2, t_2, \tau_2, \lambda_2)$, written as $sig_1 \vartriangleleft sig_2$ if $sig_1$ results
+from the application of one of the following operations:
+
+\begin{itemize}
+
+	\item $Isolated$ $cell$ $deletion$. There is an isolated $m \in M_2$ s.t. $sig_1 = sig_2 \ominus m$.
+	\item $Edge$ $deletion$. There is an edge $e \in E_2$ such that $sig_1 = sig_2 \boxplus e$.
+	\item $Contraction$. There is a simple cell $m \in M_2$, edges $e_1,e_2 \in E_2$ with $t_2(e_1) = m$,
+		  $s_2(e_2) = m$, $\tau(e_1) = \tau(e_2)$, and $sig_1 = sig_2.t[e_1 \mapsto t(e_2)] \ominus m$. 
+	\item $Edge$ $decoloring$. There is an edge $e \in E_2$ such that $sig_1 = sig_2.\tau[e \mapsto \bot]$
+	\item $Label$ $deletion$. There is a label $x \in X$ such that $sig_1 = sig_2.\lambda[x \mapsto \bot]$
+
+\end{itemize}
+% TODO: Reference!
+
 
 
 \subsection{Transition}
 
 
 
-\subsection{Ordering on Signatures}
+
 
 \section{Monotonic Abstraction}
 

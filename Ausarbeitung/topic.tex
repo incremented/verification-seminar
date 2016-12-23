@@ -171,16 +171,107 @@ we use a subset of the C-Programing Language and we only consider the following 
 \end{itemize}
 
 \section{Monotonic Abstraction}
-
+This section will introduce the concept of $Monotonic$ $Abstraction$. We call a Transition System $(S, \longrightarrow)$ with
+the ordering relation $\sqsubseteq$ we defined earlier $monotonic$, if the following holds. For any given $states$ $sig_1$, $sig_2$
+and $sig_3$ such that $sig_1 \sqsubseteq sig_2$ and $sig_1 \longrightarrow sig_3$, we can always find a state $sig_4$ such that
+$sig_2 \longrightarrow sig_4$ and $sig_3 \sqsubseteq sig_4$.
+% TODO: Reference!
+The problem is that the transition system we defined before is not $monotonic$. We therefore have to construct an over-approximation
+for this system in such a way that if the over-approximation does not contain any reachable $bad$ $states$, we can conclude that
+the original system does also not contain any reachable $bad$ $states$. We do this by redefining the transition-relation as follows.
+Let $\longrightarrow$ be the original transition-relation, then $\longrightarrow_A$ is the transition-relation $\longrightarrow$
+in such a way that it becomes $monotonic$. We can construct $\longrightarrow_A$ by using state $sig_3$ from the monotonic defintion
+as the $sig_4$ required by the definition. Or more formally, $s \longrightarrow s'$ iff there is an $s''$ such that $s'' \sqsubseteq s$
+and $s'' \longrightarrow s'$. There is a problem with this approach though since it only holds in one direction. 
+This may generate false alarms during the analysis which however did not occur in the experiments given. 
 
 \subsection{Computing Predecessors}
+The following section is about the relation $pre$ used to determine all predecessors of a given signature $sig$ with respect to
+our abstraction of the transition-relation $\longrightarrow_A$. In order to compute this relation, we have to define auxiliary 
+operations on signatures. These auxiliary operations, namely $add$ $variable$, $add$ $edge$ and $add$ $label$ are procedures
+which add the given $component$ $(variable, edge, label)$ to all places where the $component$ might occur in a heap $h$ such that
+$h$ still satisfies this signature. \\
+We begin with the $add$ $variable$ operation.\\
+Given $M^{\#} = M \cup \{\#\}$ and $sig = (\overline{M}, E, s, t, \tau, \lambda)$. We define the set 
+$sig \uparrow(\lambda(x) \in M^{\#})$ to be the set of all signatures $sig'=(\overline{M'}, E', s', t', \tau', \lambda')$ 
+so that one of the following is true:
 
-\subsection{Correctness of pre?}
+\begin{itemize}
+	\item $\lambda(x) \in M^{\#}$ and $sig = sig'$. In this case, the variable is already present and we don't have to do somethin.
+	\item $\lambda(x) = \bot$ and $sig \vartriangleleft_x sig'$. We add $x$ to a cell that is explicitly represented in $sig$.
+	\item $\lambda(x) = \bot$ and $sig \vartriangleleft_{\lambda'(x)} \vartriangleleft_x sig'$. We add $x$ to a cell that is missing in $sig$. Note that according to the definition of 
+	$\llbracket sig \rrbracket$, there may exist cells in $h \in \llbracket sig \rrbracket$ that are not explicitly represented in $sig$.
+\end{itemize}
+
+The second operation we want to define is $add$ $edge$, which adds an edge between two cells in a signature $sig$. Let $m_1 \in M$ and $m_2 \in \overline{M}$, a signature $sig'$ is now in the set
+$sig\uparrow(m_1 \xrightarrow{e} m_2)$ if one of the following holds:
+
+\begin{itemize}
+	\item There is an edge $e \in E$ such that $s(e) = m_1$, $t(e) = m_2$, $\tau(e) = c$ and $sig' = sig$. 
+		This is the simple case where we do not have to do anything.
+	\item There is an edge $e \in E$ such that $s(e) = m_1$, $t(e) = m_2$, $\tau(e) = \bot$, there is no $e' \in E$ such that
+		$s(e') = m_1$ and $\tau(e') = c$, and we have a $sig' = sig.\tau [e \mapsto c]$. We have a decolored edge which we can update.
+	\item There is no $e \in E$ such that $s(e) = m_1$ and $\tau(e) = c$, $|s^{-1}(m_1)| \le 1$ 
+	and $sig' = sig \boxplus (m_1 \xrightarrow{c} m_2)$. The edge is not present and $m_1$ has no outgoing edge of this color.
+\end{itemize}
+% TODO: Reference!
+
+\noindent
+The third and last operation that we need to define is the $add$ $label$ operation which will add two labels $x$ and $y$ to the
+given signature $sig$ so that they both label the same cell.
+We say that a signature $sig'$ is in the set of signatures 
+$sig\uparrow(\lambda(x) = \lambda(y))$, if one of the following
+holds:
+
+\begin{itemize}
+	\item $\lambda(x) \in M^{\#}$, $\lambda(x) = \lambda(y)$ and $sig' = sig$. Again, this is the simple case where both labels are already present.
+	\item $\lambda(x) = \bot$, $\lambda(y) \in M^{\#}$ and $sig' = sig.\lambda[x \mapsto \lambda(y)]$. The given label $x$ is not yet present so we add it to the cell labeled by $y$.
+	\item $\lambda(y) = \bot$ and there is a $sig_1 \in sig\uparrow(\lambda(x) \in M^{\#})$ such that $sig' = sig_1.\lambda[y \mapsto \lambda_1(x)]$. Since the label $y$ is not yet present, we add it to a signature where $x$ is guaranteed to be present.
+\end{itemize}
+
+\noindent
+With these auxiliary operations defined, we can now begin with defining the actual predecessors function. Given a signature $sig$
+and an operation $op$, the set of all predecessors is written as $pre(op)(sig)$. In the following, we will define $pre$ for each 
+operation we defined earlier, by giving a set of constraints, each signature that is in the set of predecessors has to satisfy.
+We begin with the simpler operations first.\\
+Let $sig = (\overline{M}, E, s, t, \tau, \lambda)$ be a signature. We say that the set of signatures \\
+$sig' = pre(x = y)(sig)$ is the set of signatures such that there exists a signatures $sig_1$ satisfying the following constraint.
+
+\begin{itemize}
+	\item $sig_1 \in sig\uparrow(\lambda(x) = \lambda(y))$ and $sig_1 \vartriangleleft_x sig'$.
+\end{itemize}
+
+\noindent
+We define $pre(x == y)(sig)$ is in the same way as $sig \uparrow(\lambda(x) = \lambda(y))$.\\
+To define $pre(x$ $!= y)(sig)$ we take a similar approach. We say that $pre(x$ $!= y)(sig)$ is the set of all signatures
+$sig' = (\overline{M'}, E', s', t', \tau', \lambda')$ with $\lambda'(x) \not=\lambda'(y)$ satisfying:
+
+\begin{itemize}
+	\item There is no signature $sig_1 \in sig\uparrow(\lambda(x) \in M^{\#})$ such that $sig' \in sig_1\uparrow(\lambda(y)\in M^{\#}$.
+\end{itemize}
+
+\noindent
+For $pre(x = y.next(i))(sig)$ we need a slightly different approach. We say that $pre(x = y.next(i))(sig)$ is defined as the set
+of signatures $sig' = (\overline{M'}, E', s', t', \tau', \lambda')$ such there exist signatures $sig_1$, $sig_2$, and $sig_3$ which
+satisfy the following constraints.
+
+\begin{itemize}
+	\item $sig_1 = sig\uparrow(\lambda(x) \in M^{\#})$
+	\item $sig_2 = sig_1\uparrow(\lambda(y) \in M^{\#}$
+	\item $sig_3 \in sig\uparrow(\lambda_2(y) \xrightarrow{i} \lambda_2(x))$
+	\item $sig' = sig_3.\lambda[x \mapsto \bot]$
+\end{itemize}
+
+% ausformulieren vielleicht
+
+
+\subsection{Correctness of pre}
 
 \section{The Reachability Algorithm}
+With the predecessors function $pre$ defined, we can now take a look at the Algorithm which will be used to calculate all
 
 
-
+\cite{abdulla2013monotonic}
 \begin{comment}
 This section concerns the main topic. In the following you can see a
 small illustration of how to use itemizings and enumerations.

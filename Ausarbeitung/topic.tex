@@ -1,3 +1,4 @@
+%!TEX root = main.tex
 \newpage
 % Heap
 \section{Heap}
@@ -92,8 +93,9 @@ Given a Signature $sig = (\overline{M}, E, s, t, \tau, \lambda)$ and a cell $m \
 $\lambda^{-1}(m) = \emptyset$. We say the cell is $isolated$, if it is $unlabeled$ and also $s^{-1}(m) = \emptyset$ and 
 $t^{-1}(m) = \emptyset$ hold. The cell $m$ is called $simple$, when $m$ is $unlabeled$ and the following constraints
 hold: $s^{-1}(m) = \{e_1$\}, $t^{-1}(m) = \{e_2\}$, $e_1 \not= e_2$ and $\tau(e_1) = \tau(e_2)$. 
-We can now define an ordering on two given signatures $sig_1 = (\overline{M}_1, E_1, s_1, t_1, \tau_1, \lambda_1)$ and
-$sig_2 = (\overline{M}_2, E_2, s_2, t_2, \tau_2, \lambda_2)$, written as $sig_1 \vartriangleleft sig_2$ if $sig_1$ results
+Given signatures $sig_1 = (\overline{M}_1, E_1, s_1, t_1, \tau_1, \lambda_1)$ and
+$sig_2 = (\overline{M}_2, E_2, s_2, t_2, \tau_2, \lambda_2)$, we can now define the application of an $ordering$ $step$
+written as $sig_1 \vartriangleleft sig_2$ if $sig_1$ results
 from the application of one of the following operations:
 
 \begin{itemize}
@@ -107,16 +109,69 @@ from the application of one of the following operations:
 
 \end{itemize}
 % TODO: Reference!
+\noindent
+This leads us to the definition of $ordering$ on signatures. We write $sig_1 \vartriangleleft \vartriangleleft sig_2$ to denote
+that a signature $sig'$ exists such that $sig_1 \vartriangleleft sig'$ and $sig' \vartriangleleft sig_2$.
+A signature $sig_1$ is now called $smaller$ than a signature $sig_2$, written as $sig_1 \sqsubseteq sig_2$, if there is
+a sequence of $ordering$ $steps$ from $sig_2$ to $sig_1$. The $\sqsubseteq$-Relation used here, is formally the reflexive transitive
+closure of $\vartriangleleft$.\\
+With the $ordering$ on signatures defined, we can now take a look at the semantics of signatures.
+To say that a Heap $h$ satisfies a signature $sig$ we write $h \in \llbracket sig \rrbracket$, if $sig \sqsubseteq h$.
+Where $\llbracket sig \rrbracket$ represents the set of all heaps in the $upward$ $closure$ of $sig$ with respect to our
+$ordering$-relation. We define a set of signatures $S$ in the same way as 
+$\llbracket S \rrbracket = \bigcup_{s \in S} \llbracket s \rrbracket$.
 
+\subsection{Bad Configurations}
+We will now use our signatures defined above to specify configurations of $heaps$ which are not correct. 
+Our intention is to specify a finite set of signatures describing all configurations which we consider as $bad$ $states$.
+To keep this paper as short as possible, we only take a look at one example of a $bad$ $state$ and only refer to the complete
+list of $bad$ $states$.\\
+% TODO: Reference!
+Example of a $bad$ $state$:
 
+\begin{itemize}
+	
+	\item Non-Cyclicity: This $bad$ $state$ refers to all structures which have a selector pointing to the same memory cell $m$.
+		We can easily give a set of $signatures$ for this with $S = \{s_1, s_2\}$ where $s_1$ and $s_2$ are defined as below.
 
-\subsection{Transition}
+	\begin{center}
+		\begin{tikzpicture}
+		  [scale=.8,auto=left,main node/.style={circle,fill=blue!20}, background rectangle/.style={fill=gray!20}, show background rectangle]
+		  \node[main node] (1) {};
+		  \node[text width=1cm, anchor=ost, left] at (0,0) {$s_1:$};
+		  \path (1) edge [loop above] node {1} (1);
+		\end{tikzpicture}
+		\qquad
+		\begin{tikzpicture}
+		  [scale=.8,auto=right,main node/.style={circle,fill=blue!20}, background rectangle/.style={fill=gray!20}, show background rectangle]
+		  \node[main node] (1) {};
+		  \node[text width=1cm, anchor=ost, left] at (0,0) {$s_2:$};
 
+		  \path (1) edge [loop above] node {2} (1);
+			\end{tikzpicture}
+	\end{center}
+\end{itemize}
+% TODO: edges thicker
 
-
-
+\subsection{Transition System}
+We conclude the definition part with a short introduction to Transition-Systems. A Transition-System $(S, \longrightarrow)$ consists
+of a set of states $S$ and the transition relation $\longrightarrow$. A state of such a transition system is a pair $(pc, h)$ where
+$h$ is a heap and $pc$ is the current Program-Counter in the program running. Given states $s = (pc, h)$ and $s' = (pc', h')$, we 
+say a transition from $s$ to $s'$ exists, written as $s \longrightarrow s'$, if there is a transition, such that 
+$h \xrightarrow{op} h'$. In other words, there is a heap operation defined, which changes the heap $h$ into $h'$. In our case,
+we use a subset of the C-Programing Language and we only consider the following operations:
+\begin{itemize}
+	\item $op$ is of the form $x == y$
+	\item $op$ is of the form $x$ $!= y$
+	\item $op$ is of the form $x = y$
+	\item $op$ is of the form $x = y.next(i)$
+	\item $op$ is of the form $x.next(i) = y$
+	\item $op$ is of the form $x = malloc()$
+	\item $op$ is of the form $free(x)$
+\end{itemize}
 
 \section{Monotonic Abstraction}
+
 
 \subsection{Computing Predecessors}
 

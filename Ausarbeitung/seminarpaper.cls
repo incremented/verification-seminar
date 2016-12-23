@@ -20,10 +20,12 @@
 \usepackage{enumerate}
 \usepackage{newalg}
 \usepackage{verbatim}
+\usepackage{stmaryrd}
 
 \usepackage[pdfpagelabels=true,linktocpage]{hyperref}
 
 \usepackage{tikz}
+\usetikzlibrary{backgrounds}
 \usetikzlibrary{arrows,decorations.pathmorphing,positioning,fit,trees,shapes}
 
 \usepackage{listings}

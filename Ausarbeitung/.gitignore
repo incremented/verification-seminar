@@ -5,3 +5,7 @@
 *.pdf
 *.gz
 *.sty
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls

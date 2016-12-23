@@ -203,6 +203,7 @@ so that one of the following is true:
 	$\llbracket sig \rrbracket$, there may exist cells in $h \in \llbracket sig \rrbracket$ that are not explicitly represented in $sig$.
 \end{itemize}
 
+\noindent
 The second operation we want to define is $add$ $edge$, which adds an edge between two cells in a signature $sig$. Let $m_1 \in M$ and $m_2 \in \overline{M}$, a signature $sig'$ is now in the set
 $sig\uparrow(m_1 \xrightarrow{e} m_2)$ if one of the following holds:
 
@@ -251,7 +252,8 @@ $sig' = (\overline{M'}, E', s', t', \tau', \lambda')$ with $\lambda'(x) \not=\la
 \end{itemize}
 
 \noindent
-For $pre(x = y.next(i))(sig)$ we need a slightly different approach. We say that $pre(x = y.next(i))(sig)$ is defined as the set
+For $pre(x = y.next(i))(sig)$ we need a slightly different approach.\\
+We say that $pre(x = y.next(i))(sig)$ is defined as the set
 of signatures $sig' = (\overline{M'}, E', s', t', \tau', \lambda')$ such there exist signatures $sig_1$, $sig_2$, and $sig_3$ which
 satisfy the following constraints.
 
@@ -262,14 +264,60 @@ satisfy the following constraints.
 	\item $sig' = sig_3.\lambda[x \mapsto \bot]$
 \end{itemize}
 
+\noindent
+In the same manner as for  $pre(x = y.next(i))(sig)$ we will now define\\
+$pre(x.next(i) = y)(sig)$ as the set of all signatures
+$sig' = (\overline{M'}, E', s', t', \tau', \lambda')$ where signatures $sig_1$, $sig_2$, $sig_3$ and an edge $e \in E_3$ exists
+such that these constraints hold:
+
+\begin{itemize}
+	\item $sig_1 = sig\uparrow(\lambda(x) \in M^{\#})$
+	\item $sig_2 = sig_1\uparrow(\lambda(x) \in M^{\#})$
+	\item $sig_3 \in sig\uparrow(\lambda_2(x) \xrightarrow{i} \lambda_2(y))$
+	\item $s_3(e) = \lambda_3(x)$, $t_3(e) = \lambda_3(y)$, $\tau(e) = i$
+	\item $sig' = sig_3 \boxminus e$
+\end{itemize}
+
+\noindent
+To conclude the predecessors calculation, we define the functions for memory allocation and deallocation.
+Let $sig$ be a signature. We say $pre(x = malloc())(sig)$ is the set $sig'$ of signatures, such that there exist signatures
+$sig_1$, $sig_2$ and $sig_3$ satisfying:
+
+\begin{itemize}
+	\item $sig_1 \in sig\uparrow(\lambda(x) \in M^{\#})$, $\lambda_1(x) \not= \#$, and there exists no $y \in X \setminus \{x\}$
+	such that $\lambda_1(y) = \lambda_1(x)$, $t^{-1}(\lambda(x)) = \emptyset$, and for every edge $e \in E_1$ such that
+	$s_1(e) = \lambda_1(x)$ the following holds: $t_1(e) = *$.
+	\item $sig_2 = sig_1 \ominus \lambda_1(x)$
+	\item $sig' = sig_2.\lambda[x \mapsto \bot]$
+\end{itemize}
+
+\noindent
+We end this section with the definition for memory deallocation.
+Given a signature $sig$, we say that $pre(free(x))(sig)$ is the set $sig'$ of all signatures where signatures $sig_1$ and $sig_2$
+with $m \not\in \overline{M_1}$ exists, which satisfy these constraints:
+
+\begin{itemize}
+	\item $\lambda(x) = *$
+	\item $\overline{M_1} = \overline{M}$, $E_1 = E \setminus t^{-1}(*)$, $s_1 = s|_{E_1}$, $t_1 = t|_{E_1}$, $\tau_1 = \tau|_{E_1}$
+	and for every $y \in X$, $\lambda_1(y) = \bot$ $if$ $\lambda(y) = *$, $\lambda_1(y) = \lambda(y)$ otherwise
+	\item $sig_2 = sig_1.(\overline{M} := \overline{M} \cup \{m\})$
+	\item $sig' = sig_2.\lambda[x \mapsto m]$
+\end{itemize}
+
+\noindent
+With the predecessor function now completely defined, we can take a look at the Reachability Algorithm which uses $pre$. 
+I would like to mention though, that we did not have proven the correctness of the $pre$ function yet. The Prove for the correctness
+with respect to the abstract transition relation $\longrightarrow_A$ can be found in the main reference of this seminar-paper.\cite{abdulla2013monotonic}
 % ausformulieren vielleicht
 
-
-\subsection{Correctness of pre}
-
 \section{The Reachability Algorithm}
-With the predecessors function $pre$ defined, we can now take a look at the Algorithm which will be used to calculate all
-
+In this section, we will describe how the Backward-Reachability-Algorithm works. The algorithm is given a set of $bad$ $states$ 
+$S_{bad}$ as defined earlier and computes all successive sets $s_0, S_1, S_2 ...$, where $S_0 = S_{bad}$ and
+$S_{i + 1} = \bigcup_{s \in S_i} pre(s)$. If during this process, a signature $s$ is being generated such that there exists a signature
+$s'$ which has been generated before, with $s' \sqsubseteq s$, the signature $s$ can be omitted from further analysis. The analysis
+finishes, when all new generated signatures are discarded. At this point, all generated signatures left denote exactly these heaps,
+which can reach a $bad$ $state$ using our approximated transition relation $\longrightarrow_A$. If both these sets are disjoint, 
+the safety property holds, otherwise it fails. 
 
 \cite{abdulla2013monotonic}
 \begin{comment}

@@ -1,0 +1,16 @@
+%!TEX root = ./main.tex
+\begin{frame}[fragile]{Das Paging}
+	\pause
+	Betrachte ein 2-Stufiges Speichermodell:
+	\begin{itemize}
+		\pause
+		\item <3-> Schneller Speicher (RAM / Cache) und langsamer Speicher (Festplatte)
+		\item <4-> langsamer Speicher $P = \{p_1,p_2,. . .,p_N\}$ mit N Pages
+		\item <5-> schneller Speicher $C$ ist jede $k$-elementige Teilmenge von $P$ mit $k < N$
+		\item <6-> Anfrage einer Page $p_i$:
+		\begin{itemize}
+			\item $p_i \in C \rightarrow$ (Hit / Treffer) 
+			\item $p_i \not\in C \rightarrow$ (Page-Fault)
+		\end{itemize}
+	\end{itemize}
+\end{frame}

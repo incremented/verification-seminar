@@ -1,0 +1,15 @@
+%!TEX root = ./main.tex
+\begin{frame}[fragile]{Reachability Algorithm}
+    
+    \pause
+
+    \begin{itemize}
+        \item <2-> Backwards Analysis from set of bad configurations $S_{bad}$
+        \item <3-> Compute predecessors for every $s \in S_{bad}$
+        \item <4-> If a predecessor $p$ is computed with $s' \sqsubseteq p$, where $s'$ is a previously calculated signature, discard $p$
+        \item <5-> Repeat until all new computed predecessors are being discarded
+        \item <6-> If the set of signatures is disjoint from the initial set of states\\
+         $\Rightarrow$ program execution is safe
+    \end{itemize}
+
+\end{frame}

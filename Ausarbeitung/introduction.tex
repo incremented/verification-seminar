@@ -3,6 +3,27 @@
 \section{Introduction}
 \label{sec:introduction}
 
+The verification of programs that deal with multiply linked data structures is a complex task. Previous work has shown,
+that with the use of $monotonic$ $abstraction$ and $backward$ $reachability$ this problem can be handled in regard to
+complex graph-structured configurations when verifying parameterized systems \cite{abdulla2009automated, abdulla2008monotonic, abdulla2008handling}. The verification of dynamically linked data structures though has yet only been done on relatively simple
+singly-linked data structures.\\
+This seminar paper will introduce the use of $monotonic$ $abstraction$ and $backward$ \textit{reachability} on programs dealing with 
+dynamic linked data structures with multiple selectors. We will describe a method to calculate predecessors in sequential 
+programs written in a subset of the C programing language with regard to pointer manipulation and it's common control statements.
+To keep the approach simple, we restrict the method on data structures with only two selectors. This approach however can be extended
+to data structures with more selectors.\\
+We begin with an introduction to the definition of the heap as a vertex- and edge-labeled graph. 
+To specify states the heap can be in, we introduce sets of signatures. These will be used to define the $bad$ $states$ we want
+to use, to perform the $backward$ $reachability$ on. Each signature thereby represents an $upward$-$closed$ set of heaps with respect
+to a an $ordering$-relation on both heaps and signatures.\\
+This method has been implemented in a Java prototype and tested with several programs manipulating doubly-linked lists and trees.
+The Results show that $monotonic$ $abstraction$ and $backward$ $reachability$ can indeed be successfully used for verification of 
+programs with multiply-linked dynamic data structures \cite{abdulla2009automated}.\\
+Since this approach uses relatively simple reasoning on the graphs in order to compute predecessors of symbolically represented infinite
+sets of heaps, it is highly generic and can be used for other dynamic data structures as well.\\
+In Section 2 we will start with several definitions and conventions. We define the heap in Section 3. 
+Section 4 will then introduce signatures and ordering on signatures. Monotonic abstraction will be defined in Section 5 where as 
+Section 6 covers the reachability algorithm. In Section 7 we will discuss the results.
 \begin{comment}
 Begin your paper with an introduction into your topic.
 \subsection{hallo}

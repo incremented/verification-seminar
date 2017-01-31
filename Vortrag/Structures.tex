@@ -1,0 +1,33 @@
+%!TEX root = ./main.tex
+\begin{frame}[fragile]{Structures}
+    \begin{itemize}
+        \pause
+        \item <2-> C structs with two selectors
+        \pause
+    \end{itemize}
+    
+    \begin{lstlisting}[style=customc]
+        struct A {
+            A *next;
+            A *prev;
+            Data data;
+        }    
+    \end{lstlisting}
+
+    \begin{itemize}
+        \pause
+        \item <4-> Allows complex structs
+        \pause
+    \end{itemize}
+
+    \begin{lstlisting}[style=customc]
+        struct B {
+            T1 t1;
+            T2 t2;
+            T3 t3;
+            T4 t4;
+        }    
+    \end{lstlisting}
+
+\end{frame}
+

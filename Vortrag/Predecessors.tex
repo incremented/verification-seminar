@@ -1,0 +1,24 @@
+%!TEX root = ./main.tex
+\begin{frame}[fragile]{Calculating Predecessors}
+    
+    \pause
+
+    The predecessor function $pre(op)(sig)$:
+
+    \pause
+
+    \begin{itemize}
+        \item <3-> Calculates the set of signatures which leads to $sig$ if $op$ is applied
+        \item <4-> Definition needed for each operation $op$:
+            \begin{itemize}
+                \item <5-> $pre($x = malloc()$)(sig)$
+                \item <6-> $pre($free(x)$)(sig)$
+                \item <7-> $pre($x == y$)(sig)$
+                \item <8-> $pre($x != y$)(sig)$
+                \item <9-> $pre($x = y.next(i)$)(sig)$
+                \item <10-> $pre($x.next(i) = y$)(sig)$
+                \item <11-> $pre($x = y$)(sig)$
+            \end{itemize}
+    \end{itemize}
+
+\end{frame}

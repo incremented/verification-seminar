@@ -1,0 +1,30 @@
+%!TEX root = ./main.tex
+\begin{frame}[fragile]{Monotonic Abstraction}
+    
+    \pause
+
+    \begin{definition}
+
+        A transition system T is monotonic if the following holds. For any states $sig_1, sig_2$ and $sig_3$ such that
+        $sig_1 \sqsubseteq sig_2$ and $sig_1 \longrightarrow sig_3$, we can always find a state $sig_4$ such that $sig_2 \longrightarrow sig_4$
+        and $sig_3 \sqsubseteq sig_4$.
+    \end{definition}
+
+    \begin{itemize}
+        \item <3-> Our Transition System is not monotonic
+        \item <4-> Construct an over approximation
+        \item <5-> If the over approximation is valid, the original will also be valid
+    \end{itemize}
+
+    \pause
+    \pause
+    \pause
+    \pause
+
+    \begin{definition}
+
+        We say $s \longrightarrow_A s'$ for two signatures $s$ and $s'$ iff there is an $s"$ such that $s" \sqsubseteq s$ and
+        $s \longrightarrow s'$. 
+    \end{definition}
+
+\end{frame}

@@ -1,0 +1,6 @@
+PWD /Users/tjochum/Documents/Verifikationsverfahren Seminar/Vortrag
+INPUT /usr/local/texlive/2016/texmf.cnf
+INPUT /usr/local/texlive/2016/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT MonotonicAbstraction.tex
+OUTPUT MonotonicAbstraction.log

@@ -1,0 +1,112 @@
+%!TEX root = ./main.tex
+\begin{frame}[fragile]{Signatures}
+    
+    \begin{itemize}
+        \item <2-> Defined in the same way as heaps except for:
+        \item <3-> The \textit{type function} and the \textit{variable function} can be partial
+        \item <4-> Less strict invariants: \\
+            \begin{itemize}
+                \item <5-> $\forall c \in C$ $\forall m \in M : |s^{-1}(m) \cap \tau^{-1}(c)| \le 1$
+                \item <6-> $\forall m \in M : |s^{-1}(m)| \le 2$
+            \end{itemize}
+        \item <7-> Signatures are partial heaps
+        \item <8-> What does a Signature actually represent?
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Signatures}
+    
+    \pause
+
+    \begin{itemize}
+        \item <2-> Signatures represent infinite sets of heaps
+        \item <3-> Or in other words:
+    \end{itemize}
+
+    \pause 
+
+    \pause
+
+    \medskip
+
+     A signature is a heap with some parts 'missing'. It represents the set of all heaps that have at least the property or structural information described by this signature.
+\end{frame}
+
+\begin{frame}[fragile]{Ordering on Signatures}
+    
+    \pause
+
+    Ordering Steps:
+
+    \pause
+
+    \begin{itemize}
+        \item <3-> Isolated cell deletion
+        \item <4-> Edge deletion
+        \item <5-> Contraction
+        \item <6-> Edge decoloring
+        \item <7-> Label deletion
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{The Ordering Relation}
+    
+    \pause
+
+    \begin{definition}
+        We say a signature $sig_1$ is smaller than a signature $sig_2$, if there is a sequence of 
+        ordering steps that leads from $sig_2$ to $sig_1$, written as $sig_1$ $\sqsubseteq$ $sig_2$.
+    \end{definition}
+
+    \pause
+
+    \begin{itemize}
+        \item <3-> We say that a heap $h$ satisfies $sig_1$, written as $h \in \llbracket sig_1 \rrbracket$, if $sig_1 \sqsubseteq h$
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Bad Configurations}
+    
+    \pause
+
+    \begin{itemize}
+        \item <2-> Heap Configurations that should \textbf{never} occur
+        \item <3-> Represented as signatures
+        \item <4-> Example of a Bad Configuration:
+    \end{itemize} 
+
+    \pause 
+
+    \pause
+
+    \pause
+
+    \medskip
+    \medskip
+
+    \medskip
+
+    Non-Cyclicity: This bad configuration refers to all structures which have a selector pointing to the same memory cell $m$.
+
+    \pause
+
+    \begin{center}
+        \begin{tikzpicture}
+            [scale=.8,auto=left,main node/.style={circle,fill=blue!20}, background rectangle/.style={fill=gray!20}, show background rectangle]
+            \node[main node] (1) {};
+            \node[text width=1cm, anchor=ost, left] at (0,0) {$s_1:$};
+            \path (1) edge [loop above] node {1} (1);
+            \end{tikzpicture}
+            \qquad
+            \begin{tikzpicture}
+            [scale=.8,auto=right,main node/.style={circle,fill=blue!20}, background rectangle/.style={fill=gray!20}, show background rectangle]
+            \node[main node] (1) {};
+            \node[text width=1cm, anchor=ost, left] at (0,0) {$s_2:$};
+
+            \path (1) edge [loop above] node {2} (1);
+        \end{tikzpicture}
+    \end{center}
+\end{frame}
